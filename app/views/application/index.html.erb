@@ -7,9 +7,12 @@
     <%=link_to 'Admin Dashboard',admin_dashboard_path%>
   </div>
   <div class="row">
-    <% @album.each do |album|%>
-      <%= album.name%>
-      <%= album.ci_lower_bound%>
+    <% if !@album.nil?%>
+      <% @album.each do |album|%>
+        <%= album.name%>
+        <%= album.ci_lower_bound%>
+        <%= album.release_date%>
+      <%end%>
     <%end%>
   </div>
 </div>

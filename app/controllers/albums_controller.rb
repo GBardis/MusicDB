@@ -1,6 +1,5 @@
 class AlbumsController < ApplicationController
   def index
-    @album = AlbumsWithPopularityQuery.call
+    @album = AlbumsWithPopularityQueryJob.set(wait: 10.seconds).perform_now
   end
-
 end
