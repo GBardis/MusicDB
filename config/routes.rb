@@ -42,6 +42,6 @@ Rails.application.routes.draw do
 
   resources :artists
   #resources :categories
-  #resource :albums
+  get 'albums' , to: 'albums#index'
 
 end

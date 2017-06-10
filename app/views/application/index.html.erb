@@ -7,16 +7,9 @@
     <%=link_to 'Admin Dashboard',admin_dashboard_path%>
   </div>
   <div class="row">
-    <%Album.all.each do |album|%>
-      <%=album.name%>
-      <%album.photos.each do |photo|%>
-        <%=image_tag photo.image(:medium)%>
-      <%end%>
-      <% if !album.artist_id.nil?%>
-        <li>
-          <%= Artist.find(album.artist_id).firstname%>
-        </li>
-      <%end%>
+    <% @album.each do |album|%>
+      <%= album.name%>
+      <%= album.ci_lower_bound%>
     <%end%>
   </div>
 </div>
