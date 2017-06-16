@@ -1,7 +1,7 @@
 class  Admin::ArtistsController < AdminController
   include PhotosHelper
   #before_action :require_admin
-  #before_action :find_artist
+  before_action :find_artist,only:[:edit,:update]
 
   def new_artist
     @artist = Artist.new
