@@ -46,5 +46,5 @@ Rails.application.routes.draw do
 
   #resources :categories
 
-
+  get 'test' => 'artists#test'
 end
