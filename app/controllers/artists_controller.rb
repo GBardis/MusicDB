@@ -53,11 +53,16 @@ class ArtistsController < ApplicationController
     #   name: @artist_discogs.name,
     #   description: @artist_discogs.profile
     # )
-    # @saveband.save
+    #@saveband.save
     @artist = RSpotify::Artist.search('Metallica').first
-    # @artist.albums.each do |album|
-    #   album.name
-    #   album.release_date
-    # end
-      end
+    @band = Band.find_by(name: 'Metallica')
+    @artist.albums.each do |album|
+      @saveband = Band.new(
+        name: album.name,
+        release_date: album.release_date,
+        band_id: @band.id
+      )
+
+    end
+  end
 end

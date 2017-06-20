@@ -20,7 +20,7 @@
           </thead>
           <tbody>
             <%@bands.each do |band|%>
-              <%= render 'bands/band_row', band: band%>
+              <%= render 'bands/band_row', band: @band%>
             <%end%>
           </tbody>
         </table>

@@ -8,18 +8,15 @@ class Admin::BandsController < AdminController
   def new_band
     @band = Band.new
     @artists = Artist.all.map{|x| ["#{x.name}" ,"#{x.id}"]}
-
   end
 
   def create
     @band = Band.new(band_params)
-    if @band.save!
-    # byebug
+    if @band.save.dig(:artist)
       if params[:band][:artists]
         params[:band][:artists].each do |artist|
           @bandmembers = @band.bandmembers.build(artist_id: artist) #unless artist.empty?
           @bandmembers.save #unless artist.empty?
-         ## byebug
         end
       end
       if params[:images]
@@ -28,6 +25,9 @@ class Admin::BandsController < AdminController
         end
       else
         @band.photos.create
+      end
+      respond_to do |format|
+        format.html{render partial: 'bands/new'}
       end
       flash[:success] = "Band #{@band.name} is created"
       redirect_to admin_bands_path
@@ -38,50 +38,47 @@ class Admin::BandsController < AdminController
   end
 
   def edit_band
-   @band = Band.find(params[:id])
-   @artists = Artist.all.map{|x| ["#{x.name}" ,"#{x.id}"]}
+    @band = Band.find(params[:id])
+    @artists = Artist.all.map{|x| ["#{x.name}" ,"#{x.id}"]}
 
-   @count = Bandmember.where(band_id: @band.id)
-   #byebug
-   @array = []
-   if @count.size > 1
-    @count.each do |artist|
-     @artist = Artist.find(artist.artist_id).id
-     @array << @artist
-    end
-   elsif @count.size == 1
-     @count = Bandmember.find_by(band_id: @band.id)
-     @artist = Artist.find(@count.artist_id).id
-     @array << @artist
+    @count = Bandmember.where(band_id: @band.id)
+    #byebug
+    @array = []
+    if @count.size > 1
+      @count.each do |artist|
+        @artist = Artist.find(artist.artist_id).id
+        @array << @artist
+      end
+    elsif @count.size == 1
+      @count = Bandmember.find_by(band_id: @band.id)
+      @artist = Artist.find(@count.artist_id).id
+      @array << @artist
     else
-     @array = [""]
+      @array = [""]
     end
     #@array = [""]
     #byebug
-   end
-   #@selected_artists = @array.map{|x| ["#{x.name}" ,"#{x.id}"]}
-
-
-
+  end
+  #@selected_artists = @array.map{|x| ["#{x.name}" ,"#{x.id}"]}
   def update
-   #byebug
+    #byebug@band
     if @band.update_attributes(band_params)
-     if params[:band][:artists]
-       params[:band][:artists].each do |artist|
-         @bandmembers = @band.bandmembers.build(artist_id: artist) #unless artist.empty?
-         @bandmembers.save #unless artist.empty?
-        ## byebug
-       end
-     end
-     flash[:success] = "good"
-     redirect_to admin_bands_edit_path
+      if params[:band][:artists]
+        params[:band][:artists].each do |artist|
+          @bandmembers = @band.bandmembers.build(artist_id: artist) #unless artist.empty?
+          @bandmembers.save #unless artist.empty?
+          ## byebug
+        end
+      end
+      flash[:success] = "good"
+      redirect_to admin_bands_edit_path
     else
     end
   end
 
   def destroy
-   @band.destroy
-   redirect_to admin_bands_path
+    @band.destroy
+    redirect_to admin_bands_path
   end
 
   private
