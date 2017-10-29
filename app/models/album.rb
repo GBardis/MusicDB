@@ -11,4 +11,5 @@ class Album < ApplicationRecord
   validates :name, presence: true
   # validates :release_date, presence: true
 end
-Album.reindex(async: true)
+index = Album.reindex(async: true)
+Album.search_index.promote(index[:index_name])
