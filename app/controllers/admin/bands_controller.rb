@@ -12,29 +12,30 @@ class Admin::BandsController < AdminController
 
   def create
     @band = Band.new(band_params)
-    if @band.save.dig(:artist)
-      if params[:band][:artists]
-        params[:band][:artists].each do |artist|
-          @bandmembers = @band.bandmembers.build(artist_id: artist) # unless artist.empty?
-          @bandmembers.save # unless artist.empty?
-        end
+    # byebug
+    # if @band.save.dig(:artist)
+    if params[:band][:artists]
+      params[:band][:artists].each do |artist|
+        @bandmembers = @band.bandmembers.build(artist_id: artist) # unless artist.empty?
+        @bandmembers.save # unless artist.empty?
       end
-      if params[:images]
-        params[:images].each do |image|
-          @band.photos.create(image: image)
-        end
-      else
-        @band.photos.create
-      end
-      respond_to do |format|
-        format.html { render partial: 'bands/new' }
-      end
-      flash[:success] = "Band #{@band.name} is created"
-      redirect_to admin_bands_path
-    else
-      flash[:warning] = 'Please try again'
-      redirect_to admin_bands_new_path
     end
+    if params[:images]
+      params[:images].each do |image|
+        @band.photos.create(image: image)
+      end
+    else
+      @band.photos.create
+    end
+    respond_to do |format|
+      format.html { render partial: 'bands/new' }
+    end
+    flash[:success] = "Band #{@band.name} is created"
+    redirect_to admin_bands_path
+    # else
+    #   flash[:warning] = 'Please try again'
+    #   redirect_to admin_bands_new_path
+    # end
   end
 
   def edit_band
