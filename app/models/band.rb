@@ -7,6 +7,6 @@ class Band < ApplicationRecord
   has_many :artists, through: :bandmembers
   belongs_to :category, optional: true
 end
-
-index = Band.reindex(async: true)
-Band.search_index.promote(index[:index_name])
+#
+# index = Band.reindex(async: true)
+# Band.search_index.promote(index[:index_name])
